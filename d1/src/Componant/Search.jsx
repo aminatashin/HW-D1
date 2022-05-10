@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react";
 import { Form, Row, Col } from "react-bootstrap";
+import Job from "./Job";
+
 class SearchJobs extends Component {
   state = {
     query: "",
@@ -15,8 +17,8 @@ class SearchJobs extends Component {
       "https://strive-jobs-api.herokuapp.com/jobs?search=" + this.state.query
     );
     if (resp.ok) {
-      const { jobs } = await resp.json();
-      this.setState({ jobs });
+      const { data } = await resp.json();
+      this.setState({ jobs: data });
     }
   };
 
@@ -36,8 +38,7 @@ class SearchJobs extends Component {
           <Col md={3}>
             {this.state.jobs.map((result) => (
               <>
-                <div>{result.title}</div>
-                <div>{result.company_name}</div>
+                <Job key={result._id} data={result} />
               </>
             ))}
           </Col>

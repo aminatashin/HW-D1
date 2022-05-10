@@ -1,14 +1,16 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SearchJobs from "./Componant/Search";
+import Search from "./Componant/Search";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Company from "./Componant/Company";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SearchJobs />} />
+          <Route path="/" element={<Search />} />
+          <Route path="/:compayName" element={<Company />} />
         </Routes>
       </BrowserRouter>
     </div>
