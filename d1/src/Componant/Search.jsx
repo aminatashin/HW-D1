@@ -1,3 +1,4 @@
+import React from "react";
 import { Component } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 class SearchJobs extends Component {
@@ -22,7 +23,7 @@ class SearchJobs extends Component {
   render() {
     return (
       <Row>
-        <Col md={12}>
+        <Col md={6}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Control
               type="search"
@@ -33,10 +34,10 @@ class SearchJobs extends Component {
         </Col>
         <Row>
           <Col md={3}>
-            {this.state.jobs.map((jobs) => (
+            {this.state.jobs.map((result) => (
               <>
-                <div>{jobs.title}</div>
-                <div>{jobs.company_name}</div>
+                <div>{result.title}</div>
+                <div>{result.company_name}</div>
               </>
             ))}
           </Col>
