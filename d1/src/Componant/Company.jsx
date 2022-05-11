@@ -12,9 +12,15 @@ const Company = () => {
     const res = await fetch(
       "https://strive-jobs-api.herokuapp.com/jobs?company=" + params.companyName
     );
+    //  const json = await res.json();
+
+    // console.log(json);
+
     const { data } = await res.json();
+
     setWork(data);
   };
+
   return (
     <Row>
       <Col>

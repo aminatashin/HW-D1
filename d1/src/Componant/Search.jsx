@@ -13,16 +13,19 @@ class SearchJobs extends Component {
   };
   handleSubmit = async (e) => {
     e.preventDefault();
+
     const resp = await fetch(
       "https://strive-jobs-api.herokuapp.com/jobs?search=" + this.state.query
     );
     if (resp.ok) {
       const { data } = await resp.json();
+      console.log(data);
       this.setState({ jobs: data });
     }
   };
 
   render() {
+    console.log(this.state.jobs);
     return (
       <Row>
         <Col md={6}>
@@ -34,15 +37,18 @@ class SearchJobs extends Component {
             ></Form.Control>
           </Form>
         </Col>
-        <Row>
-          <Col md={3}>
+
+        <Col xs={12}>
+          <Row>
             {this.state.jobs.map((result) => (
               <>
-                <Job key={result._id} data={result} />
+                <Col md={3}>
+                  <Job key={result._id} data={result} />
+                </Col>
               </>
             ))}
-          </Col>
-        </Row>
+          </Row>
+        </Col>
       </Row>
     );
   }
