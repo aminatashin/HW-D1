@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import favReducer from "../slice/favSlice";
+import faveReducer from "../slice/favSlice";
+import jobReducer from "../slice/jobSlice";
+import userReducer from "../slice/userSlice";
 
 export default configureStore({
   reducer: {
-    fave: favReducer,
+    fave: faveReducer,
+    job: jobReducer,
+    user: userReducer,
   },
 });

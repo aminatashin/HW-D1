@@ -1,46 +1,71 @@
 import React from "react";
 import { Component } from "react";
 import { Form, Row, Col } from "react-bootstrap";
+import { connect } from "react-redux";
 import Job from "./Job";
+import { getJob } from "../slice/jobSlice";
+import { addUser } from "../slice/userSlice";
+
+const mapStateToProps = (state) => {
+  return {
+    companyArray: state.job.company,
+    userNameP: state.user.userName,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    jobProp: (query) => {
+      dispatch(getJob(query));
+    },
+    addName: (name) => {
+      dispatch(addUser(name));
+    },
+  };
+};
 
 class SearchJobs extends Component {
   state = {
     query: "",
-    jobs: [],
+    input: "",
   };
   handleChange = (e) => {
     this.setState({ query: e.target.value });
+    this.setState({ input: e.target.value });
   };
   handleSubmit = async (e) => {
     e.preventDefault();
 
-    const resp = await fetch(
-      "https://strive-jobs-api.herokuapp.com/jobs?search=" + this.state.query
-    );
-    if (resp.ok) {
-      const { data } = await resp.json();
-      console.log(data);
-      this.setState({ jobs: data });
-    }
+    this.props.jobProp(this.state.query);
+    this.props.addName(this.state.input);
   };
 
   render() {
-    console.log(this.state.jobs);
     return (
       <Row>
-        <Col md={6}>
+        {this.props.userNameP ? (
+          <Col md={6}>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Control
+                type="search"
+                value={this.state.query}
+                onChange={this.handleChange}
+              ></Form.Control>
+            </Form>
+          </Col>
+        ) : (
           <Form onSubmit={this.handleSubmit}>
             <Form.Control
-              type="search"
-              value={this.state.query}
+              value={this.state.input}
+              on
               onChange={this.handleChange}
             ></Form.Control>
           </Form>
-        </Col>
+        )}
 
         <Col xs={12}>
           <Row>
-            {this.state.jobs.map((result) => (
+            {this.props.companyArray.map((result) => (
               <>
                 <Col md={3}>
                   <Job key={result._id} data={result} />
@@ -53,4 +78,4 @@ class SearchJobs extends Component {
     );
   }
 }
-export default SearchJobs;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchJobs);

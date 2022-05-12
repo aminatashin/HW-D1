@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (disptach) => {
   return {
     addFavProp: ({ data }) => {
-      disptach(addToFav({ data }));
+      disptach(addToFav(data));
     },
   };
 };
@@ -21,7 +21,7 @@ const Job = ({ data, addFavProp }) => {
     <div>
       <Row>
         <Col xs={3}>
-          <Link to={`/${data.company_name}`}>{data.company_name}</Link>
+          <Link to={`/${data.data.company_name}`}>{data.company_name}</Link>
         </Col>
         <Col xs={4}>
           <a href={data.url} target="_blank" rel="noreferrer">
