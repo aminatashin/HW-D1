@@ -1,34 +1,32 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToFav } from "../slice/favSlice";
 
-const mapStateToProps = (state) => {
-  return {};
-};
+// const mapDispatchToProps = (disptach) => {
+//
+//   return {
+//     addFavProp: ({ data }) => {
+//       disptach(addToFav(data));
+//     },
+//   };
+// };
 
-const mapDispatchToProps = (disptach) => {
-  return {
-    addFavProp: ({ data }) => {
-      disptach(addToFav(data));
-    },
-  };
-};
-
-const Job = ({ data, addFavProp }) => {
+const Job = ({ data }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       <Row>
         <Col xs={3}>
-          <Link to={`/${data.data.company_name}`}>{data.company_name}</Link>
+          <Link to={`/${data.company_name}`}>{data.company_name}</Link>
         </Col>
         <Col xs={4}>
           <a href={data.url} target="_blank" rel="noreferrer">
             {data.title}
           </a>
 
-          <Button onClick={() => addFavProp({ data })}>Favorite</Button>
+          <Button onClick={() => dispatch(addToFav({ data }))}>Favorite</Button>
         </Col>
       </Row>
       <Button className="btn">
@@ -37,4 +35,4 @@ const Job = ({ data, addFavProp }) => {
     </div>
   );
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Job);
+export default Job;

@@ -8,7 +8,8 @@ export const getJob = createAsyncThunk(
         "https://strive-jobs-api.herokuapp.com/jobs?search=" + query
       );
       if (res.ok) {
-        const data = await res.jason();
+        let { data } = await res.jason();
+
         return data;
       } else {
         thunkAPI.rejectWithValue();
@@ -22,7 +23,6 @@ export const getJob = createAsyncThunk(
 const jobSlice = createSlice({
   name: "job",
   initialState: {
-    query: "",
     company: [],
     loading: false,
     error: false,
@@ -39,7 +39,8 @@ const jobSlice = createSlice({
   [getJob.fulfilled]: (state, action) => {
     return {
       ...state,
-      query: action.payload,
+      loading: false,
+
       company: action.payload,
     };
   },

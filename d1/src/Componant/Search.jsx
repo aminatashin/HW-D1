@@ -1,81 +1,113 @@
-import React from "react";
-import { Component } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import { connect } from "react-redux";
+import { useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import Job from "./Job";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { getJob } from "../slice/jobSlice";
-import { addUser } from "../slice/userSlice";
 
-const mapStateToProps = (state) => {
-  return {
-    companyArray: state.job.company,
-    userNameP: state.user.userName,
-  };
-};
+const SearchJobs = () => {
+  const [query, setQuery] = useState("");
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    jobProp: (query) => {
-      dispatch(getJob(query));
-    },
-    addName: (name) => {
-      dispatch(addUser(name));
-    },
-  };
-};
+  const addJob = useSelector((state) => state.job.company);
 
-class SearchJobs extends Component {
-  state = {
-    query: "",
-    input: "",
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
   };
-  handleChange = (e) => {
-    this.setState({ query: e.target.value });
-    this.setState({ input: e.target.value });
-  };
-  handleSubmit = async (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    this.props.jobProp(this.state.query);
-    this.props.addName(this.state.input);
+    dispatch(getJob(query));
   };
 
-  render() {
-    return (
+  return (
+    <Container>
       <Row>
-        {this.props.userNameP ? (
-          <Col md={6}>
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Control
-                type="search"
-                value={this.state.query}
-                onChange={this.handleChange}
-              ></Form.Control>
-            </Form>
-          </Col>
-        ) : (
-          <Form onSubmit={this.handleSubmit}>
+        <Col xs={10} className="mx-auto my-3">
+          <h1>Remote Jobs Search</h1>
+          <Link to="/favourites" className="btn btn-primary">
+            Favourites
+          </Link>
+        </Col>
+        <Col xs={10} className="mx-auto d-flex align-items-center">
+          <Form onSubmit={handleSubmit}>
             <Form.Control
-              value={this.state.input}
-              on
-              onChange={this.handleChange}
-            ></Form.Control>
+              type="search"
+              value={query}
+              onChange={handleChange}
+              placeholder="type and press Enter"
+            />
           </Form>
-        )}
-
-        <Col xs={12}>
-          <Row>
-            {this.props.companyArray.map((result) => (
-              <>
-                <Col md={3}>
-                  <Job key={result._id} data={result} />
-                </Col>
-              </>
-            ))}
-          </Row>
+        </Col>
+        <Col xs={10} className="mx-auto mb-5">
+          {addJob.map((result) => (
+            <Job key={result._id} data={result} />
+          ))}
         </Col>
       </Row>
-    );
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SearchJobs);
+    </Container>
+  );
+};
+
+export default SearchJobs;
+
+// import React, { useState } from "react";
+
+// import { Form, Col, Row } from "react-bootstrap";
+// import { useSelector, useDispatch } from "react-redux";
+// import Job from "./Job";
+// import { getJob } from "../slice/jobSlice";
+
+// // const mapStateToProps = (state) => {
+// //   return {
+// //     companyArray: state.job.company,
+// //     userNameP: state.user.userName,
+// //   };
+// // };
+
+// // const mapDispatchToProps = (dispatch) => {
+// //   return {
+// //     jobProp: (query) => {
+// //       dispatch(getJob(query));
+// //     },
+// //     addName: (name) => {
+// //       dispatch(addUser(name));
+// //     },
+// //   };
+// // };
+
+// const SearchJobs = () => {
+//   const [query, setQuery] = useState("");
+//   const companyArray = useSelector((state) => state.job.company);
+
+//   const dispatch = useDispatch();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     dispatch(getJob(query));
+//   };
+
+//   return (
+//     <>
+//       <Row>
+//         <Col md={6}>
+//           <Form onSubmit={handleSubmit}>
+//             <Form.Control
+//               value={query}
+//               onChange={(e) => setQuery(e.target.value)}
+//             ></Form.Control>
+//           </Form>
+
+//           <Col md={4}>
+//             {companyArray.map((result) => (
+//               <Job key={result._id} data={result} />
+//             ))}
+//           </Col>
+//         </Col>
+//       </Row>
+//     </>
+//   );
+// };
+// export default SearchJobs;
